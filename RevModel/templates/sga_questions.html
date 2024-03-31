@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Next up, SG & A Estimation</h2>
+    <form id="financialModelForm" method="post" action="{% url 'sga_questions' %}">
+        {% csrf_token %}
+        <input type="hidden" id="number_of_years" value="{{ request.session.revenue_data.number_of_years }}">
+        <input type="hidden" id="type" value="sga">
+        <div class="container">
+            <label for="sga_choice">Do you want to forecast SG&A asa constant percentage of sales or vary?</label>
+            <select id="sga_choice" name="sga_choice" required onchange="toggleGrowthType('sga');">
+                <option value="">Select...</option>
+                <option value="constant">Constant</option>
+                <option value="staged">Staged</option>
+            </select>
+            <div id="sgaConstantGrowth" class="constant-growth-container" style="display:none;">
+                <label for="sga_constant_growth_rate">Growth Rate (%):</label>
+                <input type="number" required id="sga_constant_growth_rate" name="sga_constant_growth_rate" step="0.01">
+            </div>
+            <div id="sgaStagedGrowth" class="stages-container" style="display:none;">
+                <label for="sgaNumberOfStages">Number of stages:</label>
+                <input type="number" required id="sgaNumberOfStages" name="sgaNumberOfStages" min="1" onchange="generateStageInputs('sga','Duration (years):', 'Percentage of Sales (%):');">
+                <div id="sgaStagesContainer">
+                    <!-- Dynamically generated stage inputs based on sga_data will go here -->
+                </div>
+                <div id="sgaRemainingYears" class="remaining-years">
+                    <!-- Dynamically updated remaining years will be displayed here -->
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <!-- button type="button" class="button" onclick="history.back();">Back</button -->
+            <a href="{% url 'grossmargin_questions' %}" class="button">Back</a>
+            <button class="button" type="submit">Continue</button>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

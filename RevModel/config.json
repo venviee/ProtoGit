@@ -1,0 +1,19 @@
+{
+    "original_path": "/Users/eesha/Desktop/Financial Model Prototype/Givex Simplified Version.xlsx",
+    "file_name": "ProtoModel.xlsx",
+    "copy_name_prefix": "/Users/eesha/Desktop/Financial Model Prototype/",
+    "worksheet_names": {
+        "inputs": "Inputs",
+        "model": "Model"
+    },
+    "assigned_rows":{
+        "revenue": 2,
+        "grossmargin": 3,
+        "sga":4,
+        "capex": 7,
+        "capexintangible": 8
+    },
+    "start_column_index": 2,
+    "model_delete_start_column_index": 34,
+    "history_years": 3
+}

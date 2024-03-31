@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Let's Estimate Your Capital Expenditure Now..</h2>
+    <form id="financialModelForm" method="post" action="{% url 'capex_questions' %}">
+        {% csrf_token %}
+        <input type="hidden" id="number_of_years" value="{{ request.session.revenue_data.number_of_years }}">
+        <input type="hidden" id="type" value="capex">
+        <div class="container">
+            <label for="capex_choice">Do you want to grow the capital spending at a constant rate or staged growth?</label>
+            <select id="capex_choice" name="capex_choice" required onchange="toggleGrowthType('capex');">
+                <option value="">Select...</option>
+                <option value="constant">Constant</option>
+                <option value="staged">Staged</option>
+            </select>
+            <div id="capexConstantGrowth" class="constant-growth-container" style="display:none;">
+                <label for="capex_constant_growth_rate">Input Growth Rate (%):</label>
+                <input type="number" required id="capex_constant_growth_rate" name="capex_constant_growth_rate" step="0.01">
+            </div>
+            <div id="capexStagedGrowth" class="stages-container" style="display:none;">
+                <label for="capexNumberOfStages">Number of stages:</label>
+                <input type="number" required id="capexNumberOfStages" name="capexNumberOfStages" min="1" onchange="generateStageInputs('capex','Duration (years):', 'Growth Rate (%):');">
+                <div id="capexStagesContainer">
+                    <!-- Dynamically generated stage inputs based on capex_data will go here -->
+                </div>
+                <div id="capexRemainingYears" class="remaining-years">
+                    <!-- Dynamically updated remaining years will be displayed here -->
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <!-- button type="button" class="button" onclick="history.back();">Back</button -->
+            <a href="{% url 'sga_questions' %}" class="button">Back</a>
+            <button class="button" type="submit">Submit</button>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

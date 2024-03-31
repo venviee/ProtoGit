@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Financial Model Builder</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="top-bar">
+        Interactive Financial Model Builder
+    </div>
+    <div class="sidebar">
+        <!-- Sidebar navigation items -->
+        <a href="{% url 'revenue_questions' %}" class="sidebar-item{% if request.resolver_match.url_name == 'revenue_questions' %} active{% endif %}">Revenue</a>
+        <a href="{% url 'grossmargin_questions' %}" class="sidebar-item{% if request.resolver_match.url_name == 'grossmargin_questions' %} active{% endif %}">Gross Margin</a>
+        <a href="{% url 'sga_questions' %}" class="sidebar-item{% if request.resolver_match.url_name == 'sga_questions' %} active{% endif %}">SG & A</a>
+        <a href="{% url 'capex_questions' %}" class="sidebar-item{% if request.resolver_match.url_name == 'capex_questions' %} active{% endif %}">Capital Expenditure</a>   
+    </div>
+    <div class="main-container">
+        {% block content %}
+        <!-- The content blocks from other templates will be inserted here -->
+        {% endblock %}
+    </div>
+    <script src="{% static 'script.js' %}"></script>
+</body>
+</html>

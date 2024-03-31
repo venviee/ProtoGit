@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<!-- 1st Page for getting Revenue Inputs from the user-->
+<div class="container">
+    <h2>Let's Start with Forecasting Revenue...</h2>
+    <form id="financialModelForm" method="post" action="{% url 'revenue_questions' %}">
+        {% csrf_token %}
+        <input type="hidden" id="type" value="revenue">
+        <div class="container">
+            <label for="number_of_years">How long do you want to forecast for?
+                <span class="tooltip-trigger" onclick="showTooltip('Based on historical data, Givex seems to be a moderately growing company with occasionally higher growth rates aided by acquisitions. It might be prudent to go with the industry standard of 10-year forecasting horizon.')">Not sure
+                    <img src="{% static 'images/question_icon.png' %}" alt="?" class="question-icon">
+                </span>
+            </label>
+            <input type="number" id="number_of_years" name="number_of_years" value="{{ revenue_data.number_of_years|default_if_none:'' }}" min="1" max="99" required onchange="updateRemainingYears('revenue');">
+        </div>
+
+        <div class="container">
+            <label for="revenue_choice">How do you intend to forecast revenue growth?
+                <span class="tooltip-trigger" onclick="showTooltip('Based on historical data, Givex seems to be growing consistently at a high single digit growth. It might be prudent to forecast for 10 years with growth gradually converging towards the terminal growth of 2 to 3%.')">Not sure
+                    <img src="{% static 'images/question_icon.png' %}" alt="?" class="question-icon">
+                </span>
+            </label>
+            <select id="revenue_choice" name="revenue_choice" required onchange="toggleGrowthType('revenue');">
+                <option value="">Select...</option>
+                <option value="constant">Constant</option>
+                <option value="staged">Staged</option>
+            </select>
+            <div id="revenueConstantGrowth" class="constant-growth-container" style="display:none;">
+                <label for="revenue_constant_growth_rate">Input your growth rate (%):</label>
+                <input type="number" required id="revenue_constant_growth_rate" name="revenue_constant_growth_rate" step="0.01">
+            </div>
+            <div id="revenueStagedGrowth" class="stages-container" style="display:none;">
+                <label for="revenueNumberOfStages">Number of stages:</label>
+                <input type="number" required id="revenueNumberOfStages" name="revenueNumberOfStages" min="1" onchange="generateStageInputs('revenue', 'Duration (years):', 'Growth Rate (%):');">
+                <div id="revenueStagesContainer">
+                    <!-- Dynamically generated stage inputs based on revenue_data will go here -->
+                </div>
+                <div id="revenueRemainingYears" class="remaining-years">
+                    <!-- Dynamically updated remaining years will be displayed here -->
+                </div>
+            </div>
+        </div>
+        <button class="button" type="submit">Continue</button>
+    </form>
+</div>
+
+<!-- Tooltip Modal -->
+<div id="tooltipModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeTooltip()">&times;</span>
+        <p id="tooltipMessage"></p>
+    </div>
+</div>
+{% endblock %}
